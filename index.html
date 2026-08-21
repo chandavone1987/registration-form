@@ -1,0 +1,1283 @@
+<!DOCTYPE html>
+<html lang="lo">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ແບບຟອມລົງທະບຽນເຂົ້າຮ່ວມກອງປະຊຸມ</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Lao:wght@300;400;600;700&family=Noto+Serif+Lao:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --red: #c0392b;
+    --dark-red: #96281b;
+    --gold: #d4a017;
+    --deep-gold: #b8860b;
+    --cream: #fdf6e3;
+    --dark: #1a1209;
+    --mid: #3d2b1f;
+    --light-bg: #faf3e0;
+    --border: #c9a84c;
+    --shadow: rgba(26,18,9,0.18);
+    --success: #27ae60;
+    --error: #e74c3c;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--light-bg);
+    background-image:
+      radial-gradient(ellipse at 20% 10%, rgba(192,57,43,0.07) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 90%, rgba(212,160,23,0.09) 0%, transparent 50%);
+    min-height: 100vh;
+    font-family: 'Noto Sans Lao', sans-serif;
+    color: var(--dark);
+    padding: 30px 16px 60px;
+  }
+
+  .page-wrapper {
+    max-width: 700px;
+    margin: 0 auto;
+  }
+
+  /* HEADER */
+  .header {
+    text-align: center;
+    margin-bottom: 32px;
+    position: relative;
+  }
+
+  .emblem {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 14px;
+    background: linear-gradient(135deg, var(--red) 0%, var(--dark-red) 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 20px rgba(192,57,43,0.35);
+    border: 3px solid var(--gold);
+  }
+
+  .emblem svg { width: 44px; height: 44px; fill: var(--gold); }
+
+  .divider-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 10px 0 6px;
+  }
+  .divider-header::before,
+  .divider-header::after {
+    content: '';
+    flex: 1;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  }
+  .divider-star { color: var(--gold); font-size: 18px; }
+
+  .title-main {
+    font-family: 'Noto Serif Lao', serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--red);
+    letter-spacing: 0.5px;
+    line-height: 1.4;
+  }
+
+  .title-sub {
+    font-size: 14px;
+    color: var(--mid);
+    margin-top: 4px;
+    font-weight: 400;
+  }
+
+  /* CARD */
+  .form-card {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 8px 40px var(--shadow);
+    overflow: hidden;
+    border: 1px solid rgba(201,168,76,0.25);
+  }
+
+  .card-top-bar {
+    background: linear-gradient(135deg, var(--red) 0%, var(--dark-red) 100%);
+    height: 6px;
+  }
+
+  .form-inner {
+    padding: 32px 36px 36px;
+  }
+
+  /* LOCATION STATUS */
+  .location-status {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 18px;
+    border-radius: 10px;
+    margin-bottom: 28px;
+    font-size: 13px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    border: 1.5px solid transparent;
+  }
+  .location-status.checking {
+    background: #fff8e1;
+    border-color: #f0c040;
+    color: #7a5c00;
+  }
+  .location-status.allowed {
+    background: #e9f7ef;
+    border-color: #27ae60;
+    color: #1a6e3a;
+  }
+  .location-status.denied {
+    background: #fdecea;
+    border-color: #e74c3c;
+    color: #922b21;
+  }
+
+  .loc-icon {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: 14px;
+  }
+  .checking .loc-icon { background: #f0c040; }
+  .allowed .loc-icon  { background: #27ae60; color:#fff; }
+  .denied  .loc-icon  { background: #e74c3c; color:#fff; }
+
+  .loc-text { line-height: 1.4; }
+  .loc-text strong { display: block; font-size: 13.5px; }
+  .loc-text span { font-size: 12px; opacity: 0.8; }
+
+  /* SECTION LABEL */
+  .section-label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--gold);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, var(--border), transparent);
+  }
+
+  /* FIELD */
+  .field { margin-bottom: 22px; }
+
+  .field label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--mid);
+    margin-bottom: 7px;
+  }
+
+  .field label .req { color: var(--red); margin-left: 2px; }
+
+  .field input,
+  .field select {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1.5px solid #ddd;
+    border-radius: 9px;
+    font-family: 'Noto Sans Lao', sans-serif;
+    font-size: 14px;
+    color: var(--dark);
+    background: #fcfcfc;
+    transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+    outline: none;
+    appearance: none;
+  }
+
+  .field input:focus,
+  .field select:focus {
+    border-color: var(--red);
+    background: #fff;
+    box-shadow: 0 0 0 3px rgba(192,57,43,0.10);
+  }
+
+  .select-wrapper {
+    position: relative;
+  }
+  .select-wrapper::after {
+    content: '▾';
+    position: absolute;
+    right: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--mid);
+    pointer-events: none;
+    font-size: 14px;
+  }
+
+  /* SIGNATURE PAD */
+  .sig-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--mid);
+    margin-bottom: 7px;
+  }
+  .sig-label .req { color: var(--red); margin-left: 2px; }
+
+  .sig-container {
+    border: 1.5px solid #ddd;
+    border-radius: 9px;
+    overflow: hidden;
+    background: #fff;
+    transition: border-color 0.2s;
+  }
+  .sig-container:focus-within,
+  .sig-container.active { border-color: var(--red); }
+
+  #signatureCanvas {
+    display: block;
+    width: 100%;
+    height: 160px;
+    cursor: crosshair;
+    touch-action: none;
+  }
+
+  .sig-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 10px;
+    background: #f9f9f9;
+    border-top: 1px solid #eee;
+  }
+
+  .sig-hint { font-size: 11px; color: #999; }
+
+  .btn-clear-sig {
+    font-family: 'Noto Sans Lao', sans-serif;
+    font-size: 11px;
+    padding: 4px 12px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background: #fff;
+    cursor: pointer;
+    color: var(--mid);
+    transition: all 0.2s;
+  }
+  .btn-clear-sig:hover { border-color: var(--red); color: var(--red); }
+
+  /* SUBMIT */
+  .submit-area { margin-top: 30px; }
+
+  .btn-submit {
+    width: 100%;
+    padding: 15px;
+    background: linear-gradient(135deg, var(--red) 0%, var(--dark-red) 100%);
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    font-family: 'Noto Sans Lao', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    letter-spacing: 0.5px;
+    box-shadow: 0 4px 16px rgba(192,57,43,0.30);
+    transition: transform 0.15s, box-shadow 0.15s, opacity 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+  .btn-submit:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 7px 22px rgba(192,57,43,0.38);
+  }
+  .btn-submit:active:not(:disabled) { transform: translateY(0); }
+  .btn-submit:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  /* SUCCESS SCREEN */
+  .success-screen {
+    display: none;
+    text-align: center;
+    padding: 50px 30px;
+    animation: fadeIn 0.4s ease;
+  }
+  .success-screen.show { display: block; }
+
+  .success-icon {
+    width: 72px;
+    height: 72px;
+    background: var(--success);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+    font-size: 36px;
+    color: #fff;
+    box-shadow: 0 4px 20px rgba(39,174,96,0.35);
+  }
+
+  .success-title {
+    font-family: 'Noto Serif Lao', serif;
+    font-size: 20px;
+    color: var(--success);
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .success-desc { font-size: 14px; color: var(--mid); line-height: 1.6; }
+
+  .btn-reset {
+    margin-top: 24px;
+    padding: 10px 28px;
+    background: transparent;
+    border: 2px solid var(--red);
+    color: var(--red);
+    border-radius: 8px;
+    font-family: 'Noto Sans Lao', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn-reset:hover { background: var(--red); color: #fff; }
+
+  /* LOADING SPINNER */
+  .spinner {
+    width: 20px; height: 20px;
+    border: 2.5px solid rgba(255,255,255,0.4);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    display: none;
+  }
+  .btn-submit.loading .spinner { display: block; }
+  .btn-submit.loading .btn-text { opacity: 0.7; }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+  @keyframes fadeIn { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:none; } }
+
+  /* TOAST */
+  .toast {
+    position: fixed;
+    bottom: 28px;
+    left: 50%;
+    transform: translateX(-50%) translateY(80px);
+    background: #222;
+    color: #fff;
+    padding: 12px 24px;
+    border-radius: 30px;
+    font-size: 13px;
+    z-index: 999;
+    transition: transform 0.35s cubic-bezier(0.34,1.56,0.64,1);
+    white-space: nowrap;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    max-width: 90vw;
+    white-space: normal;
+    text-align: center;
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+  .toast.error  { background: #e74c3c; }
+  .toast.success { background: #27ae60; }
+
+  /* CONFIG SECTION */
+  .config-section {
+    margin-top: 10px;
+    padding: 16px 18px;
+    background: #fff8e1;
+    border: 1.5px dashed var(--gold);
+    border-radius: 10px;
+    margin-bottom: 24px;
+  }
+  .config-title {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--deep-gold);
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .config-field { margin-bottom: 8px; }
+  .config-field label { font-size: 12px; color: var(--mid); display: block; margin-bottom: 3px; }
+  .config-field input {
+    width: 100%;
+    padding: 7px 10px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 12px;
+    font-family: 'Noto Sans Lao', sans-serif;
+    background: #fff;
+    color: var(--dark);
+    outline: none;
+  }
+  .config-field input:focus { border-color: var(--gold); }
+
+  .config-note {
+    font-size: 11px;
+    color: #888;
+    margin-top: 8px;
+    line-height: 1.5;
+  }
+
+  /* Error state */
+  .field-error {
+    font-size: 11px;
+    color: var(--error);
+    margin-top: 4px;
+    display: none;
+  }
+  .field.has-error input,
+  .field.has-error select { border-color: var(--error); }
+  .field.has-error .field-error { display: block; }
+
+  @media (max-width: 520px) {
+    .form-inner { padding: 22px 18px 28px; }
+    .title-main { font-size: 18px; }
+  }
+
+  /* MODAL */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.55);
+    backdrop-filter: blur(4px);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    animation: fadeIn 0.25s ease;
+  }
+  .modal-overlay.show { display: flex; }
+
+  .modal-box {
+    background: #fff;
+    border-radius: 20px;
+    padding: 36px 32px 28px;
+    max-width: 380px;
+    width: 100%;
+    text-align: center;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    animation: popUp 0.3s cubic-bezier(0.34,1.56,0.64,1);
+    border-top: 5px solid #e74c3c;
+  }
+
+  @keyframes popUp {
+    from { opacity:0; transform: scale(0.8) translateY(20px); }
+    to   { opacity:1; transform: scale(1) translateY(0); }
+  }
+
+  .modal-icon {
+    font-size: 52px;
+    margin-bottom: 14px;
+    display: block;
+    animation: bounce 0.6s ease 0.2s both;
+  }
+  @keyframes bounce {
+    0%   { transform: translateY(-10px); }
+    50%  { transform: translateY(4px); }
+    100% { transform: translateY(0); }
+  }
+
+  .modal-title {
+    font-family: 'Noto Serif Lao', serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: #c0392b;
+    margin-bottom: 14px;
+  }
+
+  .modal-body {
+    font-size: 14px;
+    color: #444;
+    line-height: 1.7;
+    margin-bottom: 10px;
+  }
+
+  .modal-dist {
+    display: inline-block;
+    background: #fdecea;
+    border: 1.5px solid #e74c3c;
+    color: #c0392b;
+    border-radius: 30px;
+    padding: 6px 20px;
+    font-size: 15px;
+    font-weight: 700;
+    margin: 8px 0 16px;
+  }
+
+  .modal-note {
+    font-size: 12.5px;
+    color: #666;
+    line-height: 1.7;
+    margin-bottom: 22px;
+    padding: 10px 14px;
+    background: #f9f9f9;
+    border-radius: 10px;
+  }
+
+  .modal-btn {
+    width: 100%;
+    padding: 13px;
+    background: linear-gradient(135deg, #c0392b, #96281b);
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    font-family: 'Noto Sans Lao', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgba(192,57,43,0.30);
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .modal-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 7px 20px rgba(192,57,43,0.38);
+  }
+
+  /* BLOCKED SCREEN */
+  .blocked-screen {
+    display: none;
+    text-align: center;
+    padding: 40px 24px 36px;
+    animation: fadeIn 0.4s ease;
+  }
+  .blocked-screen.show { display: none; } /* ປິດການສະແດງ blocked screen */
+
+  .blocked-icon {
+    font-size: 58px;
+    margin-bottom: 16px;
+    display: block;
+  }
+
+  .blocked-title {
+    font-family: 'Noto Serif Lao', serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: #c0392b;
+    margin-bottom: 10px;
+  }
+
+  .blocked-desc {
+    font-size: 14px;
+    color: #555;
+    line-height: 1.7;
+    margin-bottom: 18px;
+  }
+
+  .blocked-countdown {
+    display: inline-block;
+    background: #fdecea;
+    border: 1.5px solid #e74c3c;
+    color: #c0392b;
+    border-radius: 30px;
+    padding: 8px 24px;
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 16px;
+    letter-spacing: 1px;
+  }
+
+  .blocked-name {
+    font-size: 13px;
+    color: #777;
+    background: #f5f5f5;
+    border-radius: 8px;
+    padding: 10px 16px;
+    margin-bottom: 8px;
+  }
+</style>
+</head>
+<body>
+
+<div class="page-wrapper">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="emblem">
+      <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="32" cy="20" r="10" fill="none" stroke="currentColor" stroke-width="3"/>
+        <path d="M12 54c0-11.046 8.954-20 20-20s20 8.954 20 20" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+        <path d="M32 38 L32 50 M26 44 L38 44" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <div class="title-main">ແບບຟອມລົງທະບຽນເຂົ້າຮ່ວມ</div>
+    <div class="title-main">ກອງປະຊຸມ ປາຖະກະຖາ</div>
+    <div class="divider-header"><span class="divider-star">✦</span></div>
+    <div class="title-sub">ກະລຸນາຕື່ມຂໍ້ມູນໃຫ້ຄົບຖ້ວນ ແລະ ຖືກຕ້ອງ</div>
+  </div>
+
+  <!-- FORM CARD -->
+  <div class="form-card">
+    <div class="card-top-bar"></div>
+    <div class="form-inner">
+
+      <!-- CONFIG (Google Sheet) -->
+      <div class="config-section" id="adminPanel" style="display:none;">
+        <div class="config-title">⚙ ຕັ້ງຄ່າ Google Sheets</div>
+        <div class="config-field">
+          <label>Google Apps Script Web App URL</label>
+          <input type="url" id="sheetUrl" placeholder="https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec" value="https://script.google.com/macros/s/AKfycbzc28R0Bk-VrI7pWWXRLgta0s3k4Rz5q6f629U94ISeBdqLvy3NGPBg3TDvY8W_xlTX/exec" />
+        </div>
+        <div class="config-field">
+          <label>ລະຫັດ / ຊື່ Sheet (ສຳລັບໝາຍເຫດ)</label>
+          <input type="text" id="sheetName" placeholder="ກອງປະຊຸມ ປາຖະກະຖາ 2568" value="registration" />
+        </div>
+        <!-- Admin Reset Lock Button -->
+        <div id="adminResetBtn" style="display:none; margin-bottom:12px;">
+          <button onclick="adminResetLock()" style="
+            width:100%; padding:9px; background:linear-gradient(135deg,#e67e22,#ca6f1e);
+            color:#fff; border:none; border-radius:8px; font-family:'Noto Sans Lao',sans-serif;
+            font-size:13px; font-weight:700; cursor:pointer;">
+            🔓 Admin: ລ້າງ Lock ລົງທະບຽນ (ທົດສອບ)
+          </button>
+        </div>
+        <div class="config-note">
+          📌 ວິທີເຊື່ອມ Google Sheets: ສ້າງ Apps Script ໃໝ່ → ວາງໂຄດ doPost() → Deploy ເປັນ Web App → ວາງ URL ຂ້າງເທິງ.<br>
+          ຕົວຢ່າງ Script: <a href="https://developers.google.com/apps-script" target="_blank" style="color:var(--deep-gold)">developers.google.com/apps-script</a>
+        </div>
+      </div>
+
+      <!-- LOCATION STATUS -->
+      <div class="location-status checking" id="locationStatus">
+        <div class="loc-icon">📍</div>
+        <div class="loc-text">
+          <strong>ກຳລັງກວດສອບທີ່ຕັ້ງ...</strong>
+          <span>ກະລຸນາອະນຸຍາດໃຫ້ເຂົ້າຫາທີ່ຕັ້ງຂອງທ່ານ</span>
+        </div>
+      </div>
+
+      <!-- FORM -->
+      <form id="regForm" novalidate>
+
+        <div class="section-label">ຂໍ້ມູນຜູ້ລົງທະບຽນ</div>
+
+        <!-- Name -->
+        <div class="field" id="fieldName">
+          <label for="fullname">ຊື່ ແລະ ນາມສະກຸນ <span class="req">*</span></label>
+          <input type="text" id="fullname" name="fullname" placeholder="ປ້ອນຊື່ ແລະ ນາມສະກຸນ" />
+          <div class="field-error">ກະລຸນາປ້ອນຊື່ ແລະ ນາມສະກຸນ</div>
+        </div>
+
+        <!-- Department -->
+        <div class="field" id="fieldDept">
+          <label for="department">ພາກສ່ວນ <span class="req">*</span></label>
+          <div class="select-wrapper">
+            <select id="department" name="department">
+              <option value="">-- ເລືອກພາກສ່ວນ --</option>
+              <option value="ກົມຈັດຕັ້ງ ແລະ ພະນັກງານ">ກົມຈັດຕັ້ງ ແລະ ພະນັກງານ</option>
+              <option value="ກົມກວດກາ">ກົມກວດກາ</option>
+              <option value="ຫ້ອງການກະຊວງ">ຫ້ອງການກະຊວງ</option>
+              <option value="ກົມແຜນການ ແລະ ການເງິນ">ກົມແຜນການ ແລະ ການເງິນ</option>
+              <option value="ກົມໄປສະນີ">ກົມໄປສະນີ</option>
+            </select>
+          </div>
+          <div class="field-error">ກະລຸນາເລືອກພາກສ່ວນ</div>
+        </div>
+
+        <!-- Position -->
+        <div class="field" id="fieldPos">
+          <label for="position">ຕໍາແໜ່ງພັກ / ລັດ <span class="req">*</span></label>
+          <input type="text" id="position" name="position" placeholder="ເຊັ່ນ: ຫົວໜ້າກົມ, ຮອງຫົວໜ້າພະແນກ..." />
+          <div class="field-error">ກະລຸນາປ້ອນຕໍາແໜ່ງ</div>
+        </div>
+
+        <!-- Signature -->
+        <div class="field" id="fieldSig">
+          <div class="sig-label">ລາຍເຊັນ <span class="req">*</span></div>
+          <div class="sig-container" id="sigContainer">
+            <canvas id="signatureCanvas"></canvas>
+            <div class="sig-toolbar">
+              <span class="sig-hint">ວາດລາຍເຊັນໃນກ່ອງຂ້າງເທິງ</span>
+              <button type="button" class="btn-clear-sig" onclick="clearSignature()">ລຶບລາຍເຊັນ</button>
+            </div>
+          </div>
+          <div class="field-error" id="sigError">ກະລຸນາລົງລາຍເຊັນ</div>
+        </div>
+
+        <!-- SUBMIT -->
+        <div class="submit-area">
+          <button type="submit" class="btn-submit" id="btnSubmit">
+            <div class="spinner"></div>
+            <span class="btn-text">✓ ລົງທະບຽນ</span>
+          </button>
+        </div>
+
+      </form>
+
+      <!-- SUCCESS -->
+      <div class="success-screen" id="successScreen">
+        <div class="success-icon">✓</div>
+        <div class="success-title">ລົງທະບຽນສຳເລັດ!</div>
+        <div class="success-desc">
+          ຂໍຂອບໃຈທີ່ລົງທະບຽນເຂົ້າຮ່ວມກອງປະຊຸມ<br>
+          ຂໍ້ມູນຂອງທ່ານໄດ້ຖືກບັນທຶກຮຽບຮ້ອຍແລ້ວ
+        </div>
+        <!-- ປຸ່ມ "ລົງທະບຽນໃໝ່" ຖືກລຶບ — ບໍ່ອະນຸຍາດໃຫ້ລົງທະບຽນຊ້ຳ -->
+      </div>
+
+      <!-- BLOCKED (already registered) -->
+      <div class="blocked-screen" id="blockedScreen">
+        <div class="blocked-icon">&#128683;</div>
+        <div class="blocked-title">ທ່ານໄດ້ລົງທະບຽນແລ້ວ</div>
+        <div class="blocked-desc">
+          ທ່ານໄດ້ລົງທະບຽນໄປແລ້ວໃນອຸປະກອນນີ້<br>
+          ສາມາດລົງທະບຽນໃໝ່ໄດ້ພາຍຫຼັງ 24 ຊົ່ວໂມງ
+        </div>
+        <div class="blocked-countdown" id="blockedCountdown">&#9203; ກຳລັງນັບ...</div>
+        <div class="blocked-name" id="blockedName"></div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- DISTANCE POPUP MODAL -->
+<div class="modal-overlay" id="distanceModal">
+  <div class="modal-box">
+    <div class="modal-icon">&#128205;</div>
+    <div class="modal-title">ທ່ານຢູ່ໄກຈາກຫ້ອງປະຊຸມ</div>
+    <div class="modal-body" id="modalBody">
+      ທ່ານຢູ່ຫ່າງຈາກຫ້ອງປະຊຸມເກີນ <strong>500 ແມັດ</strong><br>
+      ບໍ່ສາມາດລົງທະບຽນໄດ້
+    </div>
+    <div class="modal-dist" id="modalDist"></div>
+    <div class="modal-note">ກະລຸນາເດີນທາງໄປທີ່<br><strong>ສະຖາບັນເຕັກໂນໂລຊີການສື່ສານຂໍ້ມູນຂ່າວສານ</strong><br>ກ່ອນລົງທະບຽນ</div>
+    <button class="modal-btn" onclick="closeDistanceModal()">ຮັບຊາບ</button>
+  </div>
+</div>
+
+<script>
+// ============================
+// CONFIGURATION
+// ============================
+
+// ✏️ ປ່ຽນ coordinates ຂອງຈຸດລົງທະບຽນຕົວຈິງ
+const VENUE_LAT  = 17.970622267286302; // latitude — ສະຖາບັນເຕັກໂນໂລຊີການສື່ສານຂໍ້ມູນຂ່າວສານ
+const VENUE_LNG  = 102.61334515411455; // longitude — ສະຖາບັນເຕັກໂນໂລຊີການສື່ສານຂໍ້ມູນຂ່າວສານ
+const MAX_DIST_M = 500;       // ໄລຍະຫ່າງສູງສຸດ (ແມັດ)
+
+// ============================
+// STATE
+// ============================
+let locationAllowed = false;
+let userLat = null, userLng = null;
+let sigHasContent = false;
+let isDrawing = false;
+let lastX = 0, lastY = 0;
+
+// ============================
+// GEOLOCATION
+// ============================
+function getDistance(lat1, lng1, lat2, lng2) {
+  const R = 6371000;
+  const dLat = (lat2 - lat1) * Math.PI / 180;
+  const dLng = (lng2 - lng1) * Math.PI / 180;
+  const a = Math.sin(dLat/2)**2 +
+            Math.cos(lat1 * Math.PI/180) * Math.cos(lat2 * Math.PI/180) *
+            Math.sin(dLng/2)**2;
+  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+}
+
+function updateLocationUI(state, title, desc) {
+  const el = document.getElementById('locationStatus');
+  el.className = 'location-status ' + state;
+  const icons = { checking: '📍', allowed: '✓', denied: '✗' };
+  el.innerHTML = `
+    <div class="loc-icon">${icons[state]}</div>
+    <div class="loc-text"><strong>${title}</strong><span>${desc}</span></div>
+  `;
+}
+
+function applyPosition(pos) {
+  userLat = pos.coords.latitude;
+  userLng = pos.coords.longitude;
+  const dist = getDistance(userLat, userLng, VENUE_LAT, VENUE_LNG);
+  const distRounded = Math.round(dist);
+  if (dist <= MAX_DIST_M) {
+    locationAllowed = true;
+    updateLocationUI('allowed',
+      'ທີ່ຕັ້ງໄດ້ຮັບການຢືນຢັນ ✓',
+      `ທ່ານຢູ່ຫ່າງຈາກຈຸດລົງທະບຽນ ${distRounded} ແມັດ — ສາມາດລົງທະບຽນໄດ້`);
+  } else {
+    locationAllowed = false;
+    updateLocationUI('denied',
+      'ທ່ານຢູ່ຫ່າງໄກເກີນໄປ',
+      `ທ່ານຢູ່ຫ່າງ ${distRounded} ແມັດ (ຈຳກັດ ${MAX_DIST_M} ແມັດ) — ບໍ່ສາມາດລົງທະບຽນໄດ້`);
+    showDistanceModal(dist);
+  }
+}
+
+function handleGeoError(err) {
+  locationAllowed = false;
+  let title = 'ບໍ່ສາມາດກວດສອບທີ່ຕັ້ງ';
+  let msg   = 'ກະລຸນາລອງໃໝ່';
+  if (err.code === 1) {
+    title = 'ບໍ່ໄດ້ຮັບອະນຸຍາດ Location';
+    msg   = 'ກະລຸນາເປີດອະນຸຍາດ Location ໃນ Browser ຂອງທ່ານ ແລ້ວກົດ "ລອງໃໝ່"';
+  } else if (err.code === 2) {
+    title = 'ບໍ່ສາມາດດຶງທີ່ຕັ້ງ';
+    msg   = 'ສັນຍານ GPS ອ່ອນ — ກະລຸນາໄປທີ່ໂລ່ງ ຫຼື ເປີດ WiFi ແລ້ວກົດລອງໃໝ່';
+  } else if (err.code === 3) {
+    title = 'ໝົດເວລາ (Timeout)';
+    msg   = 'ດຶງທີ່ຕັ້ງຊ້າເກີນໄປ — ກະລຸນາກົດລອງໃໝ່';
+  }
+  const el = document.getElementById('locationStatus');
+  el.className = 'location-status denied';
+  el.innerHTML = `
+    <div class="loc-icon">&#10007;</div>
+    <div class="loc-text">
+      <strong>${title}</strong>
+      <span>${msg}</span>
+      <button onclick="checkLocation()" style="
+        margin-top:7px; padding:5px 18px; font-size:12px;
+        background:var(--red); color:#fff; border:none; border-radius:6px;
+        cursor:pointer; font-family:'Noto Sans Lao',sans-serif; font-weight:600;
+      ">&#128260; ລອງໃໝ່</button>
+    </div>
+  `;
+}
+
+function checkLocation() {
+  if (!navigator.geolocation) {
+    updateLocationUI('denied', 'ບໍ່ຮອງຮັບ Geolocation', 'Browser ຂອງທ່ານບໍ່ຮອງຮັບການກວດສອບທີ່ຕັ້ງ');
+    return;
+  }
+
+  updateLocationUI('checking', 'ກຳລັງກວດສອບທີ່ຕັ້ງ...', 'ກະລຸນາລໍຖ້າ...');
+
+  // Step 1: ດຶງໄວ ດ້ວຍ low-accuracy (ໃຊ້ cached position ໄດ້)
+  navigator.geolocation.getCurrentPosition(
+    applyPosition,
+    () => {
+      // Step 2: fallback — high-accuracy ດ້ວຍ timeout ທີ່ຍາວຂຶ້ນ
+      navigator.geolocation.getCurrentPosition(
+        applyPosition,
+        handleGeoError,
+        { enableHighAccuracy: true, timeout: 30000, maximumAge: 0 }
+      );
+    },
+    { enableHighAccuracy: false, timeout: 8000, maximumAge: 60000 }
+  );
+}
+
+
+// ============================
+// SIGNATURE PAD
+// ============================
+const canvas = document.getElementById('signatureCanvas');
+const ctx = canvas.getContext('2d');
+
+function resizeCanvas() {
+  const w = canvas.offsetWidth;
+  canvas.width = w;
+  canvas.height = 160;
+}
+
+function getPos(e) {
+  const rect = canvas.getBoundingClientRect();
+  const src = e.touches ? e.touches[0] : e;
+  return { x: src.clientX - rect.left, y: src.clientY - rect.top };
+}
+
+canvas.addEventListener('mousedown',  e => { isDrawing = true; const p = getPos(e); lastX=p.x; lastY=p.y; });
+canvas.addEventListener('mousemove',  e => { if (!isDrawing) return; draw(getPos(e)); });
+canvas.addEventListener('mouseup',    () => { isDrawing = false; });
+canvas.addEventListener('mouseleave', () => { isDrawing = false; });
+
+canvas.addEventListener('touchstart', e => { e.preventDefault(); isDrawing = true; const p = getPos(e); lastX=p.x; lastY=p.y; document.getElementById('sigContainer').classList.add('active'); }, { passive: false });
+canvas.addEventListener('touchmove',  e => { e.preventDefault(); if (!isDrawing) return; draw(getPos(e)); }, { passive: false });
+canvas.addEventListener('touchend',   () => { isDrawing = false; });
+
+function draw(pos) {
+  ctx.beginPath();
+  ctx.moveTo(lastX, lastY);
+  ctx.lineTo(pos.x, pos.y);
+  ctx.strokeStyle = '#1a1209';
+  ctx.lineWidth = 2.2;
+  ctx.lineCap = 'round';
+  ctx.lineJoin = 'round';
+  ctx.stroke();
+  lastX = pos.x; lastY = pos.y;
+  sigHasContent = true;
+}
+
+function clearSignature() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  sigHasContent = false;
+}
+
+// ============================
+// DISTANCE POPUP MODAL
+// ============================
+function showDistanceModal(distMeters) {
+  const modal = document.getElementById('distanceModal');
+  document.getElementById('modalDist').textContent = `ໄລຍະຫ່າງຂອງທ່ານ: ${Math.round(distMeters)} ແມັດ`;
+  modal.classList.add('show');
+}
+
+function closeDistanceModal() {
+  document.getElementById('distanceModal').classList.remove('show');
+}
+
+// Close modal when clicking overlay background
+document.getElementById('distanceModal').addEventListener('click', function(e) {
+  if (e.target === this) closeDistanceModal();
+});
+
+// ============================
+// TOAST
+// ============================
+let toastTimer;
+function showToast(msg, type='') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast show ' + type;
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => { t.className = 'toast'; }, 4000);
+}
+
+// ============================
+// VALIDATION
+// ============================
+function validateField(id, fieldId) {
+  const el = document.getElementById(id);
+  const field = document.getElementById(fieldId);
+  if (!el.value.trim()) {
+    field.classList.add('has-error');
+    return false;
+  }
+  field.classList.remove('has-error');
+  return true;
+}
+
+['fullname','department','position'].forEach(id => {
+  document.getElementById(id).addEventListener('input', () => {
+    const field = document.getElementById('field' + id.charAt(0).toUpperCase() + id.slice(1).replace('name','Name').replace('ment','Dept').replace('ition','Pos'));
+    document.getElementById(id).parentElement.closest('.field')?.classList.remove('has-error');
+  });
+});
+
+// ============================
+// FORM SUBMIT
+// ============================
+document.getElementById('regForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+
+  // ກວດສອບການລົງທະບຽນຊ້ຳກ່ອນເລີຍ
+  if (checkRegistrationLock()) {
+    return;
+  }
+
+  if (!locationAllowed) {
+    const dist = (userLat && userLng) ? getDistance(userLat, userLng, VENUE_LAT, VENUE_LNG) : MAX_DIST_M + 1;
+    showDistanceModal(dist);
+    return;
+  }
+
+  let valid = true;
+  if (!document.getElementById('fullname').value.trim()) {
+    document.getElementById('fieldName').classList.add('has-error'); valid = false;
+  } else { document.getElementById('fieldName').classList.remove('has-error'); }
+
+  if (!document.getElementById('department').value) {
+    document.getElementById('fieldDept').classList.add('has-error'); valid = false;
+  } else { document.getElementById('fieldDept').classList.remove('has-error'); }
+
+  if (!document.getElementById('position').value.trim()) {
+    document.getElementById('fieldPos').classList.add('has-error'); valid = false;
+  } else { document.getElementById('fieldPos').classList.remove('has-error'); }
+
+  if (!sigHasContent) {
+    document.getElementById('sigError').style.display = 'block';
+    document.getElementById('sigContainer').style.borderColor = 'var(--error)';
+    valid = false;
+  } else {
+    document.getElementById('sigError').style.display = 'none';
+    document.getElementById('sigContainer').style.borderColor = '';
+  }
+
+  if (!valid) {
+    showToast('⚠ ກະລຸນາຕື່ມຂໍ້ມູນໃຫ້ຄົບຖ້ວນ', 'error');
+    return;
+  }
+
+  const btn = document.getElementById('btnSubmit');
+  btn.classList.add('loading');
+  btn.disabled = true;
+
+  const regName = document.getElementById('fullname').value.trim();
+
+  const payload = {
+    fullname:   regName,
+    department: document.getElementById('department').value,
+    position:   document.getElementById('position').value.trim(),
+    signature:  canvas.toDataURL('image/png'),
+    latitude:   userLat,
+    longitude:  userLng,
+    timestamp:  new Date().toLocaleString('lo-LA', { timeZone: 'Asia/Vientiane' }),
+    sheetName:  document.getElementById('sheetName').value.trim() || 'ກອງປະຊຸມ'
+  };
+
+  const sheetUrl = document.getElementById('sheetUrl').value.trim();
+
+  // ຕັ້ງ Lock ທັນທີ ກ່ອນສົ່ງ — ປ້ອງກັນກົດຊ້ຳລະຫວ່າງ loading
+  setRegistrationLock(regName);
+
+  try {
+    if (sheetUrl) {
+      await fetch(sheetUrl, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+    }
+    // ສະແດງໜ້າສຳເລັດ
+    document.getElementById('regForm').style.display = 'none';
+    document.getElementById('successScreen').classList.add('show');
+    showToast('✓ ລົງທະບຽນສຳເລັດ!', 'success');
+  } catch (err) {
+    // Network error — ຍັງ lock ຢູ່ (ຂໍ້ມູນຖືກບັນທຶກໃນ device ແລ້ວ)
+    showToast('⚠ ສົ່ງຂໍ້ມູນບໍ່ສຳເລັດ ແຕ່ການລົງທະບຽນຖືກບັນທຶກແລ້ວ', 'error');
+    document.getElementById('regForm').style.display = 'none';
+    document.getElementById('successScreen').classList.add('show');
+  }
+
+  btn.classList.remove('loading');
+  btn.disabled = false;
+});
+
+
+// ============================
+// RESET
+// ============================
+function resetForm() {
+  // ກວດວ່ายັງ lock ຢູ່ — ຖ້າແມ່ນ ໃຫ້ສະແດງ blocked screen ທັນທີ
+  if (checkRegistrationLock()) return;
+
+  document.getElementById('regForm').reset();
+  clearSignature();
+  document.getElementById('regForm').style.display = '';
+  document.getElementById('successScreen').classList.remove('show');
+  document.getElementById('blockedScreen').classList.remove('show');
+  ['fieldName','fieldDept','fieldPos'].forEach(id => document.getElementById(id).classList.remove('has-error'));
+  document.getElementById('sigError').style.display = 'none';
+  document.getElementById('sigContainer').style.borderColor = '';
+  checkLocation();
+}
+
+// ສຳລັບ Admin ເທົ່ານັ້ນ — ລ້າງ lock ໄດ້
+function adminResetLock() {
+  try { localStorage.removeItem(LOCK_KEY); } catch(e) {}
+  try { sessionStorage.removeItem(LOCK_KEY); } catch(e) {}
+  document.getElementById('regForm').reset();
+  clearSignature();
+  document.getElementById('regForm').style.display = '';
+  document.getElementById('successScreen').classList.remove('show');
+  document.getElementById('blockedScreen').classList.remove('show');
+  ['fieldName','fieldDept','fieldPos'].forEach(id => document.getElementById(id).classList.remove('has-error'));
+  document.getElementById('sigError').style.display = 'none';
+  document.getElementById('sigContainer').style.borderColor = '';
+  checkLocation();
+  showToast('🔓 Admin: ລ້າງ lock ສຳເລັດ — ສາມາດລົງທະບຽນໃໝ່ໄດ້', 'success');
+}
+
+
+// ============================
+// REGISTRATION LOCK (24h)
+// ============================
+const LOCK_KEY = 'reg_lock_v2';
+const LOCK_DURATION = 24 * 60 * 60 * 1000; // 24 ຊົ່ວໂມງ
+
+function checkRegistrationLock() {
+  try {
+    // ກວດທັງ localStorage ແລະ sessionStorage
+    const raw = localStorage.getItem(LOCK_KEY) || sessionStorage.getItem(LOCK_KEY);
+    if (!raw) return false;
+    const data = JSON.parse(raw);
+    const elapsed = Date.now() - data.timestamp;
+    if (elapsed < LOCK_DURATION) {
+      showBlockedScreen(data);
+      return true;
+    } else {
+      localStorage.removeItem(LOCK_KEY);
+      sessionStorage.removeItem(LOCK_KEY);
+      return false;
+    }
+  } catch(e) { return false; }
+}
+
+function setRegistrationLock(name) {
+  const data = JSON.stringify({ timestamp: Date.now(), name: name });
+  try { localStorage.setItem(LOCK_KEY, data); } catch(e) {}
+  try { sessionStorage.setItem(LOCK_KEY, data); } catch(e) {}
+}
+
+function showBlockedScreen(data) {
+  // ບໍ່ສະແດງ blocked screen — disable ປຸ່ມ submit ແທນ
+  const btn = document.getElementById('btnSubmit');
+  btn.disabled = true;
+  btn.style.opacity = '0.5';
+  btn.style.cursor = 'not-allowed';
+
+  // ສະແດງຂໍ້ຄວາມໃຕ້ປຸ່ມ
+  let msgEl = document.getElementById('lockMsg');
+  if (!msgEl) {
+    msgEl = document.createElement('div');
+    msgEl.id = 'lockMsg';
+    msgEl.style.cssText = 'margin-top:12px; padding:12px 16px; background:#fdecea; border:1.5px solid #e74c3c; border-radius:10px; text-align:center; font-size:13px; color:#c0392b; line-height:1.7;';
+    btn.parentNode.appendChild(msgEl);
+  }
+
+  // ສະແດງຊື່ທີ່ລົງທະບຽນ
+  msgEl.innerHTML = `&#128683; ອຸປະກອນນີ້ໄດ້ລົງທະບຽນໃນຊື່: <strong>${data.name || ''}</strong> ແລ້ວ`;
+}
+
+function startCountdown(registeredAt) {
+  function update() {
+    const remaining = LOCK_DURATION - (Date.now() - registeredAt);
+    if (remaining <= 0) {
+      localStorage.removeItem(LOCK_KEY);
+      document.getElementById('blockedScreen').classList.remove('show');
+      document.getElementById('regForm').style.display = '';
+      document.getElementById('blockedCountdown').textContent = 'ສາມາດລົງທະບຽນໄດ້ແລ້ວ!';
+      return;
+    }
+    const h = Math.floor(remaining / 3600000);
+    const m = Math.floor((remaining % 3600000) / 60000);
+    const s = Math.floor((remaining % 60000) / 1000);
+    const pad = n => String(n).padStart(2, '0');
+    document.getElementById('blockedCountdown').textContent =
+      `⏳ ລົງທະບຽນໄດ້ໃນ: ${pad(h)}:${pad(m)}:${pad(s)}`;
+  }
+  update();
+  setInterval(update, 1000);
+}
+
+// ============================
+// INIT
+// ============================
+window.addEventListener('load', () => {
+  resizeCanvas();
+  if (!checkRegistrationLock()) {
+    checkLocation();
+  }
+});
+window.addEventListener('resize', resizeCanvas);
+</script>
+
+<!-- GOOGLE APPS SCRIPT TEMPLATE (comment reference) -->
+<!--
+HOW TO SET UP GOOGLE SHEETS INTEGRATION:
+1. Open Google Sheets → Extensions → Apps Script
+2. Paste this code:
+
+function doPost(e) {
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  var data = JSON.parse(e.postData.contents);
+  sheet.appendRow([
+    data.timestamp,
+    data.fullname,
+    data.department,
+    data.position,
+    data.latitude,
+    data.longitude,
+    data.signature  // base64 image of signature
+  ]);
+  return ContentService
+    .createTextOutput(JSON.stringify({status:'ok'}))
+    .setMimeType(ContentService.MimeType.JSON);
+}
+
+3. Deploy → New deployment → Web App
+   - Execute as: Me
+   - Who has access: Anyone
+4. Copy the deployment URL and paste into the form
+-->
+
+
+<!-- ADMIN TOGGLE (hidden button: triple-click on header title) -->
+<div id="adminLoginModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); backdrop-filter:blur(4px); z-index:2000; align-items:center; justify-content:center; padding:20px;">
+  <div style="background:#fff; border-radius:16px; padding:32px 28px; max-width:340px; width:100%; text-align:center; box-shadow:0 20px 60px rgba(0,0,0,0.3); border-top:4px solid #d4a017;">
+    <div style="font-size:36px; margin-bottom:12px;">🔐</div>
+    <div style="font-family:'Noto Serif Lao',serif; font-size:18px; font-weight:700; color:#3d2b1f; margin-bottom:6px;">ເຂົ້າລະບົບ Admin</div>
+    <div style="font-size:12px; color:#999; margin-bottom:20px;">ກະລຸນາປ້ອນລະຫັດຜ່ານ</div>
+    <input type="password" id="adminPassInput" placeholder="ລະຫັດຜ່ານ" style="width:100%; padding:11px 14px; border:1.5px solid #ddd; border-radius:8px; font-size:14px; font-family:'Noto Sans Lao',sans-serif; outline:none; margin-bottom:12px; text-align:center; letter-spacing:4px;" onkeydown="if(event.key==='Enter') verifyAdmin()" />
+    <div id="adminPassError" style="color:#e74c3c; font-size:12px; margin-bottom:10px; display:none;">ລະຫັດຜ່ານບໍ່ຖືກຕ້ອງ</div>
+    <div style="display:flex; gap:10px;">
+      <button onclick="closeAdminModal()" style="flex:1; padding:10px; border:1.5px solid #ddd; border-radius:8px; background:#fff; cursor:pointer; font-family:'Noto Sans Lao',sans-serif; font-size:13px; color:#666;">ຍົກເລີກ</button>
+      <button onclick="verifyAdmin()" style="flex:1; padding:10px; border:none; border-radius:8px; background:linear-gradient(135deg,#c0392b,#96281b); color:#fff; cursor:pointer; font-family:'Noto Sans Lao',sans-serif; font-size:13px; font-weight:700;">ເຂົ້າລະບົບ</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ============================
+// ADMIN PANEL
+// ============================
+const ADMIN_PASSWORD = 'admin@2568'; // ✏️ ປ່ຽນລະຫັດຜ່ານຕາມຕ້ອງການ
+let adminClickCount = 0;
+let adminClickTimer = null;
+
+// Triple-click on header title to open admin login
+document.querySelector('.title-main').addEventListener('click', () => {
+  adminClickCount++;
+  clearTimeout(adminClickTimer);
+  adminClickTimer = setTimeout(() => { adminClickCount = 0; }, 600);
+  if (adminClickCount >= 3) {
+    adminClickCount = 0;
+    openAdminModal();
+  }
+});
+
+function openAdminModal() {
+  const modal = document.getElementById('adminLoginModal');
+  modal.style.display = 'flex';
+  setTimeout(() => document.getElementById('adminPassInput').focus(), 100);
+  document.getElementById('adminPassError').style.display = 'none';
+  document.getElementById('adminPassInput').value = '';
+}
+
+function closeAdminModal() {
+  document.getElementById('adminLoginModal').style.display = 'none';
+}
+
+function verifyAdmin() {
+  const pass = document.getElementById('adminPassInput').value;
+  if (pass === ADMIN_PASSWORD) {
+    closeAdminModal();
+    const panel = document.getElementById('adminPanel');
+    const isHidden = panel.style.display === 'none';
+    panel.style.display = isHidden ? 'block' : 'none';
+    // ສະແດງປຸ່ມ Reset Lock ໃຫ້ admin
+    document.getElementById('adminResetBtn').style.display = isHidden ? 'block' : 'none';
+    showToast(isHidden ? '⚙ Admin Panel ເປີດແລ້ວ' : '⚙ Admin Panel ປິດແລ້ວ', 'success');
+  } else {
+    document.getElementById('adminPassError').style.display = 'block';
+    document.getElementById('adminPassInput').value = '';
+    document.getElementById('adminPassInput').focus();
+  }
+}
+
+document.getElementById('adminLoginModal').addEventListener('click', function(e) {
+  if (e.target === this) closeAdminModal();
+});
+</script>
+
+</body>
+</html>
