@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="lo">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin — Dashboard ລົງທະບຽນ</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Lao:wght@300;400;600;700&family=Noto+Serif+Lao:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --red: #c0392b; --dark-red: #96281b;
+    --gold: #d4a017; --deep-gold: #b8860b;
+    --cream: #fdf6e3; --dark: #1a1209; --mid: #3d2b1f;
+    --light-bg: #faf3e0; --border: #c9a84c;
+    --shadow: rgba(26,18,9,0.18);
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  body {
+    background: var(--light-bg);
+    min-height: 100vh;
+    font-family: 'Noto Sans Lao', sans-serif;
+    color: var(--dark);
+  }
+
+  /* LOGIN SCREEN */
+  .login-screen {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: radial-gradient(ellipse at 30% 20%, rgba(192,57,43,0.08) 0%, transparent 60%),
+                radial-gradient(ellipse at 70% 80%, rgba(212,160,23,0.10) 0%, transparent 60%);
+  }
+
+  .login-box {
+    background: #fff;
+    border-radius: 20px;
+    padding: 40px 36px 36px;
+    max-width: 380px;
+    width: 100%;
+    box-shadow: 0 16px 50px var(--shadow);
+    border-top: 5px solid var(--red);
+    text-align: center;
+  }
+
+  .login-emblem {
+    width: 70px; height: 70px;
+    background: linear-gradient(135deg, var(--red), var(--dark-red));
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 18px;
+    font-size: 32px;
+    box-shadow: 0 4px 16px rgba(192,57,43,0.3);
+    border: 3px solid var(--gold);
+  }
+
+  .login-title {
+    font-family: 'Noto Serif Lao', serif;
+    font-size: 20px; font-weight: 700;
+    color: var(--red); margin-bottom: 6px;
+  }
+
+  .login-sub { font-size: 13px; color: #888; margin-bottom: 28px; }
+
+  .login-input {
+    width: 100%; padding: 13px 16px;
+    border: 1.5px solid #ddd; border-radius: 10px;
+    font-size: 16px; font-family: 'Noto Sans Lao', sans-serif;
+    text-align: center; letter-spacing: 6px;
+    outline: none; margin-bottom: 10px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .login-input:focus { border-color: var(--red); box-shadow: 0 0 0 3px rgba(192,57,43,0.10); }
+
+  .login-error {
+    font-size: 12px; color: #e74c3c;
+    margin-bottom: 12px; display: none;
+  }
+
+  .login-btn {
+    width: 100%; padding: 14px;
+    background: linear-gradient(135deg, var(--red), var(--dark-red));
+    color: #fff; border: none; border-radius: 10px;
+    font-family: 'Noto Sans Lao', sans-serif;
+    font-size: 15px; font-weight: 700; cursor: pointer;
+    box-shadow: 0 4px 16px rgba(192,57,43,0.28);
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .login-btn:hover { transform: translateY(-2px); box-shadow: 0 7px 20px rgba(192,57,43,0.36); }
+
+  /* DASHBOARD */
+  .dashboard-screen { display: none; }
+  .dashboard-screen.show { display: block; }
+
+  /* TOP BAR */
+  .topbar {
+    background: linear-gradient(135deg, var(--red), var(--dark-red));
+    padding: 14px 24px;
+    display: flex; align-items: center; justify-content: space-between;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.2);
+    position: sticky; top: 0; z-index: 100;
+  }
+
+  .topbar-title {
+    font-family: 'Noto Serif Lao', serif;
+    font-size: 17px; font-weight: 700; color: #fff;
+    display: flex; align-items: center; gap: 10px;
+  }
+
+  .topbar-right { display: flex; align-items: center; gap: 12px; }
+
+  .btn-refresh {
+    padding: 7px 16px;
+    background: rgba(255,255,255,0.2);
+    border: 1px solid rgba(255,255,255,0.4);
+    color: #fff; border-radius: 8px;
+    font-family: 'Noto Sans Lao', sans-serif;
+    font-size: 12px; cursor: pointer;
+    transition: background 0.2s;
+  }
+  .btn-refresh:hover { background: rgba(255,255,255,0.3); }
+
+  .btn-logout {
+    padding: 7px 16px;
+    background: rgba(0,0,0,0.2);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: #fff; border-radius: 8px;
+    font-family: 'Noto Sans Lao', sans-serif;
+    font-size: 12px; cursor: pointer;
+    transition: background 0.2s;
+  }
+  .btn-logout:hover { background: rgba(0,0,0,0.35); }
+
+  /* CONTENT */
+  .content { padding: 24px 20px 40px; max-width: 1100px; margin: 0 auto; }
+
+  /* STAT CARDS */
+  .stat-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px; margin-bottom: 24px;
+  }
+
+  .stat-card {
+    background: #fff;
+    border-radius: 14px;
+    padding: 22px 16px;
+    text-align: center;
+    box-shadow: 0 4px 20px var(--shadow);
+    border: 1.5px solid transparent;
+    transition: transform 0.2s;
+  }
+  .stat-card:hover { transform: translateY(-3px); }
+  .stat-card.total  { border-color: #d4a017; }
+  .stat-card.male   { border-color: #2980b9; }
+  .stat-card.female { border-color: #e91e8c; }
+
+  .stat-icon { font-size: 34px; margin-bottom: 8px; }
+  .stat-num {
+    font-family: 'Noto Serif Lao', serif;
+    font-size: 42px; font-weight: 700; line-height: 1;
+    margin-bottom: 6px;
+  }
+  .stat-card.total  .stat-num { color: #b8860b; }
+  .stat-card.male   .stat-num { color: #2980b9; }
+  .stat-card.female .stat-num { color: #e91e8c; }
+  .stat-label { font-size: 13px; color: #666; font-weight: 600; }
+
+  /* PROGRESS BAR */
+  .gender-bar-wrap {
+    background: #fff;
+    border-radius: 14px;
+    padding: 20px 22px;
+    box-shadow: 0 4px 20px var(--shadow);
+    margin-bottom: 24px;
+  }
+
+  .gender-bar-title {
+    font-size: 13px; font-weight: 700;
+    color: var(--mid); margin-bottom: 14px;
+  }
+
+  .bar-row { margin-bottom: 12px; }
+  .bar-label-row {
+    display: flex; justify-content: space-between;
+    font-size: 12px; color: #555; margin-bottom: 5px;
+  }
+  .bar-track {
+    height: 12px; background: #f0f0f0;
+    border-radius: 6px; overflow: hidden;
+  }
+  .bar-fill {
+    height: 100%; border-radius: 6px;
+    transition: width 0.8s ease;
+  }
+  .bar-fill.male   { background: linear-gradient(90deg, #2980b9, #5dade2); }
+  .bar-fill.female { background: linear-gradient(90deg, #e91e8c, #f48fb1); }
+
+  /* TABLE */
+  .table-wrap {
+    background: #fff;
+    border-radius: 14px;
+    box-shadow: 0 4px 20px var(--shadow);
+    overflow: hidden;
+  }
+
+  .table-header {
+    padding: 16px 20px;
+    display: flex; align-items: center; justify-content: space-between;
+    border-bottom: 1px solid #eee;
+  }
+
+  .table-title {
+    font-family: 'Noto Serif Lao', serif;
+    font-size: 15px; font-weight: 700; color: var(--mid);
+  }
+
+  .table-count {
+    font-size: 12px; color: #888;
+    background: #f5f5f5; padding: 4px 12px;
+    border-radius: 20px;
+  }
+
+  .search-box {
+    padding: 8px 14px; border: 1.5px solid #ddd;
+    border-radius: 8px; font-size: 13px;
+    font-family: 'Noto Sans Lao', sans-serif;
+    outline: none; width: 200px;
+  }
+  .search-box:focus { border-color: var(--red); }
+
+  .table-scroll { overflow-x: auto; }
+
+  table {
+    width: 100%; border-collapse: collapse;
+    font-size: 13px;
+  }
+
+  thead { background: #f9f9f9; }
+  th {
+    padding: 12px 14px; text-align: left;
+    font-weight: 700; color: var(--mid);
+    border-bottom: 2px solid #eee;
+    white-space: nowrap;
+  }
+
+  td {
+    padding: 11px 14px;
+    border-bottom: 1px solid #f0f0f0;
+    vertical-align: middle;
+  }
+
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: #fdf6e3; }
+
+  .badge {
+    display: inline-block;
+    padding: 3px 10px; border-radius: 20px;
+    font-size: 11px; font-weight: 700;
+  }
+  .badge.male   { background: #e8f4fd; color: #2980b9; }
+  .badge.female { background: #fde8f0; color: #e91e8c; }
+
+  .no-data {
+    text-align: center; padding: 40px;
+    color: #aaa; font-size: 14px;
+  }
+
+  /* UPDATED TIME */
+  .updated-bar {
+    text-align: right; font-size: 11px;
+    color: #aaa; padding: 10px 20px;
+    background: #fafafa; border-top: 1px solid #eee;
+  }
+
+  /* LOADING */
+  .loading-overlay {
+    position: fixed; inset: 0;
+    background: rgba(250,243,224,0.85);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 200; flex-direction: column; gap: 12px;
+  }
+  .loading-overlay.hide { display: none; }
+
+  .spinner-lg {
+    width: 44px; height: 44px;
+    border: 4px solid rgba(192,57,43,0.2);
+    border-top-color: var(--red);
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .loading-text { font-size: 14px; color: var(--mid); }
+
+  @media (max-width: 520px) {
+    .stat-grid { grid-template-columns: repeat(3,1fr); gap: 10px; }
+    .stat-num { font-size: 30px; }
+    .stat-icon { font-size: 24px; }
+    .search-box { width: 130px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- LOADING -->
+<div class="loading-overlay" id="loadingOverlay">
+  <div class="spinner-lg"></div>
+  <div class="loading-text">ກຳລັງໂຫລດ...</div>
+</div>
+
+<!-- LOGIN -->
+<div class="login-screen" id="loginScreen">
+  <div class="login-box">
+    <div class="login-emblem">🔐</div>
+    <div class="login-title">Admin Dashboard</div>
+    <div class="login-sub">ລະບົບສະຫຼຸບຜູ້ລົງທະບຽນ</div>
+    <input type="password" class="login-input" id="passInput"
+      placeholder="••••••••" onkeydown="if(event.key==='Enter') doLogin()" />
+    <div class="login-error" id="loginError">ລະຫັດຜ່ານບໍ່ຖືກຕ້ອງ</div>
+    <button class="login-btn" onclick="doLogin()">ເຂົ້າລະບົບ</button>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div class="dashboard-screen" id="dashboardScreen">
+
+  <!-- TOP BAR -->
+  <div class="topbar">
+    <div class="topbar-title">&#128202; Dashboard ລົງທະບຽນ</div>
+    <div class="topbar-right">
+      <button class="btn-refresh" onclick="loadData()">&#128260; ໂຫລດໃໝ່</button>
+      <button class="btn-logout" onclick="doLogout()">&#128274; ອອກ</button>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- STAT CARDS -->
+    <div class="stat-grid">
+      <div class="stat-card total">
+        <div class="stat-icon">&#128101;</div>
+        <div class="stat-num" id="statTotal">—</div>
+        <div class="stat-label">ທັງໝົດ</div>
+      </div>
+      <div class="stat-card male">
+        <div class="stat-icon">&#128104;</div>
+        <div class="stat-num" id="statMale">—</div>
+        <div class="stat-label">ຊາຍ</div>
+      </div>
+      <div class="stat-card female">
+        <div class="stat-icon">&#128105;</div>
+        <div class="stat-num" id="statFemale">—</div>
+        <div class="stat-label">ຍິງ</div>
+      </div>
+    </div>
+
+    <!-- GENDER BAR -->
+    <div class="gender-bar-wrap">
+      <div class="gender-bar-title">&#9646; ສັດສ່ວນເພດ</div>
+      <div class="bar-row">
+        <div class="bar-label-row">
+          <span>&#128104; ຊາຍ</span>
+          <span id="malePct">0%</span>
+        </div>
+        <div class="bar-track">
+          <div class="bar-fill male" id="maleBar" style="width:0%"></div>
+        </div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label-row">
+          <span>&#128105; ຍິງ</span>
+          <span id="femalePct">0%</span>
+        </div>
+        <div class="bar-track">
+          <div class="bar-fill female" id="femaleBar" style="width:0%"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TABLE -->
+    <div class="table-wrap">
+      <div class="table-header">
+        <div class="table-title">&#128203; ລາຍຊື່ຜູ້ລົງທະບຽນ</div>
+        <div style="display:flex; align-items:center; gap:10px;">
+          <span class="table-count" id="tableCount">0 ຄົນ</span>
+          <input type="text" class="search-box" id="searchBox"
+            placeholder="&#128269; ຄົ້ນຫາ..." oninput="filterTable()" />
+        </div>
+      </div>
+      <div class="table-scroll">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>ວັນທີ / ເວລາ</th>
+              <th>ຊື່ - ນາມສະກຸນ</th>
+              <th>ເພດ</th>
+              <th>ພາກສ່ວນ</th>
+              <th>ຕໍາແໜ່ງພັກ</th>
+              <th>ເບີໂທ</th>
+            </tr>
+          </thead>
+          <tbody id="tableBody">
+            <tr><td colspan="7" class="no-data">ກຳລັງໂຫລດ...</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="updated-bar" id="updatedBar">—</div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+// ============================
+// CONFIG
+// ============================
+const ADMIN_PASSWORD = 'admin@2568'; // ✏️ ປ່ຽນລະຫັດຕາມຕ້ອງການ
+const SHEET_URL = 'https://script.google.com/macros/s/AKfycbzc28R0Bk-VrI7pWWXRLgta0s3k4Rz5q6f629U94ISeBdqLvy3NGPBg3TDvY8W_xlTX/exec';
+const SESSION_KEY = 'admin_auth';
+const AUTO_REFRESH = 30000; // 30 ວິນາທີ
+
+let allRows = [];
+let refreshTimer = null;
+
+// ============================
+// LOGIN
+// ============================
+function doLogin() {
+  const pass = document.getElementById('passInput').value;
+  if (pass === ADMIN_PASSWORD) {
+    sessionStorage.setItem(SESSION_KEY, '1');
+    document.getElementById('loginScreen').style.display = 'none';
+    document.getElementById('dashboardScreen').classList.add('show');
+    loadData();
+    refreshTimer = setInterval(loadData, AUTO_REFRESH);
+  } else {
+    document.getElementById('loginError').style.display = 'block';
+    document.getElementById('passInput').value = '';
+    document.getElementById('passInput').focus();
+  }
+}
+
+function doLogout() {
+  sessionStorage.removeItem(SESSION_KEY);
+  clearInterval(refreshTimer);
+  location.reload();
+}
+
+// ============================
+// LOAD DATA
+// ============================
+async function loadData() {
+  document.getElementById('loadingOverlay').classList.remove('hide');
+  try {
+    const res = await fetch(SHEET_URL + '?action=getAll');
+    const data = await res.json();
+
+    allRows = data.rows || [];
+    const total  = allRows.length;
+    const male   = allRows.filter(r => r.gender === 'ຊາຍ').length;
+    const female = allRows.filter(r => r.gender === 'ຍິງ').length;
+
+    // Stat cards
+    animateNum('statTotal',  total);
+    animateNum('statMale',   male);
+    animateNum('statFemale', female);
+
+    // Progress bars
+    const malePct   = total > 0 ? Math.round(male   / total * 100) : 0;
+    const femalePct = total > 0 ? Math.round(female / total * 100) : 0;
+    document.getElementById('maleBar').style.width   = malePct + '%';
+    document.getElementById('femaleBar').style.width = femalePct + '%';
+    document.getElementById('malePct').textContent   = malePct + '%';
+    document.getElementById('femalePct').textContent = femalePct + '%';
+
+    // Table
+    renderTable(allRows);
+
+    const now = new Date().toLocaleString('lo-LA', { timeZone: 'Asia/Vientiane' });
+    document.getElementById('updatedBar').textContent = 'ອັບເດດລ່າສຸດ: ' + now;
+
+  } catch(e) {
+    document.getElementById('tableBody').innerHTML =
+      '<tr><td colspan="7" class="no-data">&#10060; ບໍ່ສາມາດໂຫລດຂໍ້ມູນ: ' + e.message + '</td></tr>';
+  }
+  document.getElementById('loadingOverlay').classList.add('hide');
+}
+
+// ============================
+// RENDER TABLE
+// ============================
+function renderTable(rows) {
+  const tbody = document.getElementById('tableBody');
+  document.getElementById('tableCount').textContent = rows.length + ' ຄົນ';
+
+  if (rows.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="7" class="no-data">&#128203; ຍັງບໍ່ມີຜູ້ລົງທະບຽນ</td></tr>';
+    return;
+  }
+
+  tbody.innerHTML = rows.map((r, i) => `
+    <tr>
+      <td style="color:#aaa; font-size:12px;">${i + 1}</td>
+      <td style="font-size:12px; white-space:nowrap;">${r.timestamp || '—'}</td>
+      <td style="font-weight:600;">${r.fullname || '—'}</td>
+      <td>
+        <span class="badge ${r.gender === 'ຊາຍ' ? 'male' : 'female'}">
+          ${r.gender === 'ຊາຍ' ? '&#128104;' : '&#128105;'} ${r.gender || '—'}
+        </span>
+      </td>
+      <td style="font-size:12px;">${r.department || '—'}</td>
+      <td style="font-size:12px;">${r.position || '—'}</td>
+      <td style="font-size:12px;">${r.phone || '—'}</td>
+    </tr>
+  `).join('');
+}
+
+// ============================
+// SEARCH / FILTER
+// ============================
+function filterTable() {
+  const q = document.getElementById('searchBox').value.toLowerCase();
+  const filtered = allRows.filter(r =>
+    (r.fullname   || '').toLowerCase().includes(q) ||
+    (r.department || '').toLowerCase().includes(q) ||
+    (r.position   || '').toLowerCase().includes(q) ||
+    (r.phone      || '').toLowerCase().includes(q) ||
+    (r.gender     || '').toLowerCase().includes(q)
+  );
+  renderTable(filtered);
+}
+
+// ============================
+// ANIMATE NUMBER
+// ============================
+function animateNum(id, target) {
+  const el = document.getElementById(id);
+  let current = 0;
+  const step = Math.max(1, Math.ceil(target / 30));
+  const timer = setInterval(() => {
+    current = Math.min(current + step, target);
+    el.textContent = current;
+    if (current >= target) clearInterval(timer);
+  }, 30);
+}
+
+// ============================
+// INIT
+// ============================
+window.addEventListener('load', () => {
+  document.getElementById('loadingOverlay').classList.add('hide');
+  if (sessionStorage.getItem(SESSION_KEY) === '1') {
+    document.getElementById('loginScreen').style.display = 'none';
+    document.getElementById('dashboardScreen').classList.add('show');
+    loadData();
+    refreshTimer = setInterval(loadData, AUTO_REFRESH);
+  }
+  document.getElementById('passInput').focus();
+});
+</script>
+
+<!--
+============================
+GOOGLE APPS SCRIPT — ອັບເດດ doGet():
+============================
+function doGet(e) {
+  var action = e && e.parameter && e.parameter.action ? e.parameter.action : '';
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  var data  = sheet.getDataRange().getValues();
+
+  if (action === 'getAll') {
+    var rows = [];
+    for (var i = 1; i < data.length; i++) {
+      rows.push({
+        timestamp:  data[i][0],
+        fullname:   data[i][1],
+        gender:     data[i][2],
+        department: data[i][3],
+        position:   data[i][4],
+        phone:      data[i][5]
+      });
+    }
+    return ContentService
+      .createTextOutput(JSON.stringify({ rows: rows }))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+
+  // getStats (default)
+  var total = data.length - 1;
+  var male = 0, female = 0;
+  for (var i = 1; i < data.length; i++) {
+    if (data[i][2] === 'ຊາຍ') male++;
+    else if (data[i][2] === 'ຍິງ') female++;
+  }
+  return ContentService
+    .createTextOutput(JSON.stringify({ total: total, male: male, female: female }))
+    .setMimeType(ContentService.MimeType.JSON);
+}
+-->
+
+</body>
+</html>
