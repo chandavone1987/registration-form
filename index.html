@@ -741,27 +741,26 @@
         <div class="field" id="fieldGender">
           <label>ເພດ <span class="req">*</span></label>
           <div style="display:flex; gap:12px; margin-top:8px;">
-            <label style="
+            <div onclick="selectGender('male')" id="labelMale" style="
               flex:1; display:flex; align-items:center; justify-content:center;
-              gap:8px; cursor:pointer; padding:10px 16px;
+              gap:8px; cursor:pointer; padding:12px 16px;
               border:2px solid #ddd; border-radius:9px; background:#fcfcfc;
               font-size:14px; font-weight:600; transition:all 0.2s;
-              user-select:none;" id="labelMale">
-              <input type="radio" name="gender" value="ຊາຍ" id="genderMale"
-                style="display:none;"
-                onchange="selectGender('male')"> &#128104; ຊາຍ
-            </label>
-            <label style="
+              user-select:none;">
+              &#128104; ຊາຍ
+            </div>
+            <div onclick="selectGender('female')" id="labelFemale" style="
               flex:1; display:flex; align-items:center; justify-content:center;
-              gap:8px; cursor:pointer; padding:10px 16px;
+              gap:8px; cursor:pointer; padding:12px 16px;
               border:2px solid #ddd; border-radius:9px; background:#fcfcfc;
               font-size:14px; font-weight:600; transition:all 0.2s;
-              user-select:none;" id="labelFemale">
-              <input type="radio" name="gender" value="ຍິງ" id="genderFemale"
-                style="display:none;"
-                onchange="selectGender('female')"> &#128105; ຍິງ
-            </label>
+              user-select:none;">
+              &#128105; ຍິງ
+            </div>
           </div>
+          <!-- Hidden inputs for form submission -->
+          <input type="radio" name="gender" value="ຊາຍ" id="genderMale" style="display:none;">
+          <input type="radio" name="gender" value="ຍິງ" id="genderFemale" style="display:none;">
           <div class="field-error" id="genderError">ກະລຸນາເລືອກເພດ</div>
         </div>
 
