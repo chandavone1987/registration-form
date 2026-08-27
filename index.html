@@ -740,26 +740,12 @@
         <!-- Gender -->
         <div class="field" id="fieldGender">
           <label>ເພດ <span class="req">*</span></label>
-          <div style="display:flex; gap:12px; margin-top:8px;">
-            <label style="
-              flex:1; display:flex; align-items:center; justify-content:center;
-              gap:8px; cursor:pointer; padding:10px 16px;
-              border:2px solid #ddd; border-radius:9px; background:#fcfcfc;
-              font-size:14px; font-weight:600; transition:all 0.2s;
-              user-select:none;" id="labelMale">
-              <input type="radio" name="gender" value="ຊາຍ" id="genderMale"
-                style="display:none;"
-                onchange="selectGender('male')"> &#128104; ຊາຍ
+          <div style="display:flex; gap:16px; margin-top:4px;">
+            <label style="display:flex; align-items:center; gap:8px; cursor:pointer; font-weight:400; font-size:14px;">
+              <input type="radio" name="gender" value="ຊາຍ" style="width:18px; height:18px; accent-color:var(--red); cursor:pointer;"> ຊາຍ
             </label>
-            <label style="
-              flex:1; display:flex; align-items:center; justify-content:center;
-              gap:8px; cursor:pointer; padding:10px 16px;
-              border:2px solid #ddd; border-radius:9px; background:#fcfcfc;
-              font-size:14px; font-weight:600; transition:all 0.2s;
-              user-select:none;" id="labelFemale">
-              <input type="radio" name="gender" value="ຍິງ" id="genderFemale"
-                style="display:none;"
-                onchange="selectGender('female')"> &#128105; ຍິງ
+            <label style="display:flex; align-items:center; gap:8px; cursor:pointer; font-weight:400; font-size:14px;">
+              <input type="radio" name="gender" value="ຍິງ" style="width:18px; height:18px; accent-color:var(--red); cursor:pointer;"> ຍິງ
             </label>
           </div>
           <div class="field-error" id="genderError">ກະລຸນາເລືອກເພດ</div>
@@ -889,8 +875,8 @@
 // ============================
 
 // ✏️ ປ່ຽນ coordinates ຂອງຈຸດລົງທະບຽນຕົວຈິງ
-const VENUE_LAT  = 17.9710834; // latitude — ສະຖາບັນເຕັກໂນໂລຊີການສື່ສານຂໍ້ມູນຂ່າວສານ
-const VENUE_LNG  = 102.6129384; // longitude — ສະຖາບັນເຕັກໂນໂລຊີການສື່ສານຂໍ້ມູນຂ່າວສານ
+const VENUE_LAT  = 17.939140604401786; // latitude — ສະຖາບັນເຕັກໂນໂລຊີການສື່ສານຂໍ້ມູນຂ່າວສານ 
+const VENUE_LNG  = 102.62364250005669; // longitude — ສະຖາບັນເຕັກໂນໂລຊີການສື່ສານຂໍ້ມູນຂ່າວສານ 
 const MAX_DIST_M = 500;       // ໄລຍະຫ່າງສູງສຸດ (ແມັດ)
 
 // ============================
@@ -902,34 +888,6 @@ let sigHasContent = false;
 let isDrawing = false;
 let lastX = 0, lastY = 0;
 
-
-
-// ============================
-// GENDER SELECTOR
-// ============================
-function selectGender(g) {
-  const labelMale   = document.getElementById('labelMale');
-  const labelFemale = document.getElementById('labelFemale');
-  if (g === 'male') {
-    document.getElementById('genderMale').checked = true;
-    labelMale.style.borderColor   = 'var(--red)';
-    labelMale.style.background    = '#fff0ee';
-    labelMale.style.color         = 'var(--red)';
-    labelFemale.style.borderColor = '#ddd';
-    labelFemale.style.background  = '#fcfcfc';
-    labelFemale.style.color       = '';
-  } else {
-    document.getElementById('genderFemale').checked = true;
-    labelFemale.style.borderColor = '#e91e8c';
-    labelFemale.style.background  = '#fde8f0';
-    labelFemale.style.color       = '#e91e8c';
-    labelMale.style.borderColor   = '#ddd';
-    labelMale.style.background    = '#fcfcfc';
-    labelMale.style.color         = '';
-  }
-  document.getElementById('genderError').style.display = 'none';
-  document.getElementById('fieldGender').classList.remove('has-error');
-}
 
 // ============================
 // APPLY SETTINGS FROM ADMIN
