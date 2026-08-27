@@ -509,10 +509,8 @@
               <th>#</th>
               <th>ວັນທີ / ເວລາ</th>
               <th>ຊື່ - ນາມສະກຸນ</th>
-              <th>ເພດ</th>
               <th>ພາກສ່ວນ</th>
               <th>ຕໍາແໜ່ງພັກ</th>
-              <th>ເບີໂທ</th>
             </tr>
           </thead>
           <tbody id="tableBody">
@@ -575,7 +573,7 @@
 // CONFIG
 // ============================
 const ADMIN_PASSWORD = 'admin@2568'; // ✏️ ປ່ຽນລະຫັດຕາມຕ້ອງການ
-const SHEET_URL = 'https://script.google.com/macros/s/AKfycby9OlR-3DBhUR6JwaFtZuOn-i88ESP_Tu6DtthL5lJ4mM7QQkQcuTIEnLTSK5SaLaA6/exec';
+const SHEET_URL = 'https://script.google.com/macros/s/AKfycbw6Ub0AqiH8UtIsfzV_wTgq3bj_Ghujnw-7MNjz6FAbshy24WxaCc-icuGZUZSET50B/exec';
 const SESSION_KEY = 'admin_auth';
 const AUTO_REFRESH = 30000; // 30 ວິນາທີ
 
@@ -855,14 +853,8 @@ function renderTable(rows) {
       <td style="color:#aaa; font-size:12px;">${i + 1}</td>
       <td style="font-size:12px; white-space:nowrap;">${r.timestamp || '—'}</td>
       <td style="font-weight:600;">${r.fullname || '—'}</td>
-      <td>
-        <span class="badge ${r.gender === 'ຊາຍ' ? 'male' : 'female'}">
-          ${r.gender === 'ຊາຍ' ? '&#128104;' : '&#128105;'} ${r.gender || '—'}
-        </span>
-      </td>
       <td style="font-size:12px;">${r.department || '—'}</td>
       <td style="font-size:12px;">${r.position || '—'}</td>
-      <td style="font-size:12px;">${r.phone || '—'}</td>
     </tr>
   `).join('');
 }
@@ -875,9 +867,7 @@ function filterTable() {
   const filtered = allRows.filter(r =>
     (r.fullname   || '').toLowerCase().includes(q) ||
     (r.department || '').toLowerCase().includes(q) ||
-    (r.position   || '').toLowerCase().includes(q) ||
-    (r.phone      || '').toLowerCase().includes(q) ||
-    (r.gender     || '').toLowerCase().includes(q)
+    (r.position   || '').toLowerCase().includes(q)
   );
   renderTable(filtered);
 }
